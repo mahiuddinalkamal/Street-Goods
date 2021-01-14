@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-
 import javax.persistence.*;
+import java.sql.Blob;
 
 @Data
 @Entity
@@ -16,18 +16,15 @@ import javax.persistence.*;
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Item {
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
-
     @Type(type = "json")
     @Column(columnDefinition = "json", name = "item_keywords")
     private String[] keywords;
-    @Column(name = "image")
     private byte[] image;
-    @Column(name = "pickedup")
-    private Boolean pickedUp;
+    private Boolean pickedup;
     @Embedded
     private Coordinates coordinates;
 

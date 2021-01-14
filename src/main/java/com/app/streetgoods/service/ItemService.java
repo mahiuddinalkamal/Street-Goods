@@ -16,16 +16,12 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-    public List<Item> listItemByName(String name) {
-        return itemRepository.findByName(name);
-    }
-
-    public List<Item> listItemByKeywords(String[] keywords) {
-        return itemRepository.findByKeywords(keywords);
+    public List<Item> listItemByNameOrKeywords(String name) {
+        return itemRepository.findByNameOrKeywords(name);
     }
 
     public List<Item> listItemByLocation(Coordinates location, Double radius) {
-        return itemRepository.findByLocation(location, radius);
+        return itemRepository.findByLocation(location.getLat(),location.getLng(), radius);
     }
 
     public Item getItem(Long id) {

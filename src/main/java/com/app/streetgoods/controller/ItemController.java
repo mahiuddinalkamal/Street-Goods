@@ -20,26 +20,16 @@ public class ItemController {
         return itemService.listAllItem();
     }
     @GetMapping("/name")
-    public ResponseEntity<List<Item>> listByName(@RequestParam("name") String name) {
+    public ResponseEntity<List<Item>> listByNameOrKeywords(@RequestParam("name") String name) {
         try{
-            List<Item> items = itemService.listItemByName(name);
-            return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<List<Item>>(HttpStatus.NOT_FOUND);
-        }
-    }
-    @GetMapping("/keywords")
-    public ResponseEntity<List<Item>> listByKeywords(@RequestParam("keywords")  String[] keywords) {
-        try{
-            List<Item> items = itemService.listItemByKeywords(keywords);
+            List<Item> items = itemService.listItemByNameOrKeywords(name);
             return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<List<Item>>(HttpStatus.NOT_FOUND);
         }
     }
     @GetMapping("/location")
-    public ResponseEntity<List<Item>> listByKeywords(@RequestParam("location") Coordinates location,
-                                 @RequestParam("radius") double radius) {
+    public ResponseEntity<List<Item>> listByLocation(Coordinates location, @RequestParam("rad") double radius){
         try{
             List<Item> items = itemService.listItemByLocation(location, radius);
             return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
