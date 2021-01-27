@@ -15,28 +15,12 @@ import java.util.NoSuchElementException;
 public class ItemController {
     @Autowired
     private ItemService itemService;
+
     @GetMapping("")
     public Iterable<Item> listAll() {
         return itemService.listAllItem();
     }
-    @GetMapping("/name")
-    public ResponseEntity<List<Item>> listByNameOrKeywords(@RequestParam("name") String name) {
-        try{
-            List<Item> items = itemService.listItemByNameOrKeywords(name);
-            return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<List<Item>>(HttpStatus.NOT_FOUND);
-        }
-    }
-    @GetMapping("/location")
-    public ResponseEntity<List<Item>> listByLocation(Coordinates location, @RequestParam("rad") double radius){
-        try{
-            List<Item> items = itemService.listItemByLocation(location, radius);
-            return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<List<Item>>(HttpStatus.NOT_FOUND);
-        }
-    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Item> get(@PathVariable Long id) {
         try {
@@ -46,10 +30,46 @@ public class ItemController {
             return new ResponseEntity<Item>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/name")
+    public ResponseEntity<List<Item>> listByNameOrKeywords(@RequestParam("name") String name) {
+        try{
+            List<Item> items = itemService.listItemByNameOrKeywords(name);
+            return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<List<Item>>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/location")
+    public ResponseEntity<List<Item>> listByLocation(Coordinates location, @RequestParam("rad") double radius){
+        try{
+            List<Item> items = itemService.listItemByLocation(location, radius);
+            return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<List<Item>>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/name&location")
+    public ResponseEntity<List<Item>> listItemBySearchStringandLocation(@RequestParam("name") String name,
+                                                                        Coordinates location,
+                                                                        @RequestParam("rad") double radius){
+        try{
+            List<Item> items = itemService.listItemBySearchStringandLocation(name, location, radius);
+            return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<List<Item>>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
     @PostMapping("/")
     public void add(@RequestBody Item item) {
         itemService.saveItem(item);
     }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody Item item, @PathVariable Long id) {
         try {
@@ -61,6 +81,8 @@ public class ItemController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         itemService.deleteItem(id);

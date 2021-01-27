@@ -22,4 +22,14 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             "HAVING distance < :rad " +
             "ORDER BY distance LIMIT 0 , 20", nativeQuery = true)
     List<Item> findByLocation(@Param("lat") Double lat,@Param("lng") Double lng, @Param("rad") Double radius);
+
+    @Query(value = "SELECT *, ( 3959 * acos ( cos ( radians(:lat) ) " +
+            "* cos( radians( lat ) ) * cos( radians( lng ) " +
+            "- radians(:lng) ) " +
+            "+ sin ( radians(:lat) ) * sin( radians( lat ) ))) " +
+            "AS distance FROM item i " +
+            "where i.name like %:name% or i.item_keywords like %:name% "+
+            "HAVING distance < :rad " +
+            "ORDER BY distance LIMIT 0 , 20", nativeQuery = true)
+    List<Item> findBySearchStringandLocation(@Param("name") String name,@Param("lat") Double lat,@Param("lng") Double lng, @Param("rad") Double radius);
 }

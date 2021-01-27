@@ -24,6 +24,10 @@ public class ItemService {
         return itemRepository.findByLocation(location.getLat(),location.getLng(), radius);
     }
 
+    public List<Item> listItemBySearchStringandLocation(String name, Coordinates location, Double radius) {
+        return itemRepository.findBySearchStringandLocation(name, location.getLat(),location.getLng(), radius);
+    }
+
     public Item getItem(Long id) {
         return itemRepository.findByID(id);
     }
