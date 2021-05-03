@@ -29,4 +29,12 @@ public class Item {
     private Coordinates coordinates;
 
     public Item(){}
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
